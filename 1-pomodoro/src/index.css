@@ -6,3 +6,11 @@
 	font-family: 'Bebas Neue';
 	src: url('assets/fonts/bebasneue-book-webfont.woff2');
 }
+
+@layer utilities {
+	input[type='number']::-webkit-inner-spin-button,
+	input[type='number']::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
