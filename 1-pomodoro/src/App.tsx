@@ -1,5 +1,11 @@
+import Timer from './components/Timer/Timer';
+
 function App() {
-	return <h1>Hello World!</h1>;
+	return (
+		<div className='min-w-full min-h-screen bg-[#2B2A30] flex items-center justify-center p-6'>
+			<Timer />
+		</div>
+	);
 }
 
 export default App;
