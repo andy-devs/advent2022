@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
 import useTimer from 'hooks/useTimer';
-import { useState } from 'react';
 import { ReactComponent as Gear } from 'assets/images/gear.svg';
 import { ReactComponent as Check } from 'assets/images/check.svg';
 import { useForm } from 'react-hook-form';
+import TimeInput from 'components/TimeInput/TimeInput';
+import useTimerInput from 'hooks/useTimerInput';
 
 interface TimerProps {}
 
@@ -23,53 +23,61 @@ const Timer: React.FC<TimerProps> = () => {
 		setTime,
 	} = useTimer(15, 0);
 
-	const { register } = useForm<TimerInput>({
-		defaultValues: {
-			minutes: Number(minutes),
-			seconds: Number(seconds),
-		},
-	});
+	const { value: newMinutes, handleValueChange: handleNewMinutesChange } =
+		useTimerInput(minutes);
+
+	const { value: newSeconds, handleValueChange: handleNewSecondsChange } =
+		useTimerInput(seconds);
+
+	const handleEditStart = () => {
+		handleNewMinutesChange(minutes);
+		handleNewSecondsChange(seconds);
+
+		toggleEdit();
+	};
+
+	const handleEditEnd = () => {
+		setTime(+newMinutes, +newSeconds);
+		toggleEdit();
+	};
 
 	return (
 		<div className='bg-black rounded-[50%] w-full max-w-[518px] min-h-full max-h-[518px] aspect-[1/1] flex items-center justify-center p-2 shadow-[5px_-16px_50px_rgba(255,255,255,0.15)]'>
-			<div className='w-full h-full bg-background rounded-[50%] flex flex-col items-center justify-center shadow-[inset_0px_0px_114px_rgba(0,0,0,0.45)]'>
-				<div className='font-timer text-white text-[120px] sm:text-[196px] leading-none text-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
+			<div className='relative w-full h-full bg-background rounded-[50%] flex flex-col items-center justify-center shadow-[inset_0px_0px_114px_rgba(0,0,0,0.45)]'>
+				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-timer text-white text-[130px] xs:text-[196px] leading-none text-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
 					{isEditing ? (
-						<form className='max-w-[304px] flex'>
-							<input
-								className='bg-transparent grow-1 max-w-[160px] focus:outline-none'
-								type='number'
-								placeholder='00'
-								step='1'
-								min='0'
-								max='99'
-								{...register('minutes', { maxLength: 2 })}
+						<form className='flex items-center content-center'>
+							<TimeInput
+								value={newMinutes}
+								onChange={(e) => handleNewMinutesChange(e.target.value)}
 							/>
 							<span>:</span>
-							<input
-								className='bg-transparent grow-1 max-w-[160px] focus:outline-none'
-								type='number'
-								placeholder='00'
-								step='1'
-								min='0'
-								max='99'
-								{...register('seconds', { maxLength: 2 })}
+							<TimeInput
+								value={newSeconds}
+								onChange={(e) => handleNewSecondsChange(e.target.value)}
 							/>
 						</form>
 					) : (
-						<span className=''>{`${minutes}:${seconds}`}</span>
+						<span className='flex items-center content-center'>
+							<span className='w-[2ch]'>{minutes}</span>:
+							<span className='w-[2ch]'>{seconds}</span>
+						</span>
 					)}
 				</div>
-				{!isEditing && (
-					<button
-						onClick={toggleActive}
-						className='font-button text-white tracking-[0.6em] mt-3 sm:mt-6 py-2 pl-4 pr-2 text-center'>
-						{isActive ? 'STOP' : 'START'}
-					</button>
-				)}
-				<span onClick={toggleEdit} className='mt-4 cursor-pointer'>
-					{isEditing ? <Check /> : <Gear />}
-				</span>
+				<div className='flex flex-col items-center absolute bottom-[5%] gap-2 xs:bottom-[10%] xs:gap-4'>
+					{!isEditing && (
+						<button
+							onClick={toggleActive}
+							className='font-button text-white tracking-[0.6em] py-2 pl-4 pr-2 text-center'>
+							{isActive ? 'STOP' : 'START'}
+						</button>
+					)}
+					<span
+						onClick={isEditing ? handleEditEnd : handleEditStart}
+						className='cursor-pointer'>
+						{isEditing ? <Check /> : <Gear />}
+					</span>
+				</div>
 			</div>
 		</div>
 	);

@@ -38,7 +38,7 @@ const useTimer = (initialMinutes?: number, initialSeconds?: number) => {
 		setIsActive((prev) => !prev);
 	};
 
-	const setTime = (milliseconds: number) => {};
+	const setTime = (minutes: number, seconds: number) => {};
 
 	const minutes = Math.floor(count / 60);
 	const seconds = count - minutes * 60;
@@ -47,8 +47,8 @@ const useTimer = (initialMinutes?: number, initialSeconds?: number) => {
 	const parsedSeconds = seconds < 10 ? '0' + seconds : seconds;
 
 	return {
-		minutes: parsedMinutes,
-		seconds: parsedSeconds,
+		minutes: parsedMinutes.toString(),
+		seconds: parsedSeconds.toString(),
 		isActive,
 		toggleActive,
 		isEditing,
