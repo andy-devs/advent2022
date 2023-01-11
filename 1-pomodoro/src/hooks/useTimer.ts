@@ -2,17 +2,17 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 const useTimer = (initialMinutes?: number, initialSeconds?: number) => {
-	const getInitialState = () => {
-		if (initialMinutes && initialSeconds) {
-			return initialMinutes * 60 + initialSeconds;
-		} else if (initialMinutes && !initialSeconds) {
-			return initialMinutes * 60;
-		} else if (!initialMinutes && initialSeconds) {
-			return initialSeconds;
-		} else return 15 * 60;
+	const getMiliseconds = (minutes: number, seconds: number) => {
+		if (minutes && seconds) {
+			return minutes * 60 + seconds;
+		} else if (minutes && !seconds) {
+			return minutes * 60;
+		} else return seconds;
 	};
 
-	const [count, setCount] = useState(() => getInitialState());
+	const [count, setCount] = useState(() =>
+		getMiliseconds(initialMinutes || 15, initialSeconds || 0)
+	);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isActive, setIsActive] = useState(false);
 
@@ -21,7 +21,14 @@ const useTimer = (initialMinutes?: number, initialSeconds?: number) => {
 
 		if (isActive) {
 			interval = setInterval(() => {
-				setCount((prev) => prev - 1);
+				setCount((prev) => {
+					if (prev !== 0) {
+						return prev - 1;
+					}
+					setIsActive(false);
+					clearInterval(interval);
+					return 0;
+				});
 			}, 1000);
 		}
 
@@ -38,7 +45,9 @@ const useTimer = (initialMinutes?: number, initialSeconds?: number) => {
 		setIsActive((prev) => !prev);
 	};
 
-	const setTime = (minutes: number, seconds: number) => {};
+	const setTime = (minutes: number, seconds: number) => {
+		setCount(() => getMiliseconds(minutes, seconds));
+	};
 
 	const minutes = Math.floor(count / 60);
 	const seconds = count - minutes * 60;

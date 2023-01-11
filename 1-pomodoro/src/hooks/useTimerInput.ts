@@ -4,7 +4,12 @@ const useTimerInput = (initialValue: string) => {
 	const [value, setValue] = useState(initialValue);
 
 	const handleValueChange = (newValue: string) => {
-		setValue(newValue);
+		setValue((prev) => {
+			if (newValue.length > 2) {
+				return newValue.slice(0, 2);
+			}
+			return newValue;
+		});
 	};
 
 	return { value, handleValueChange };
