@@ -1,0 +1,4 @@
+<svg>
+  <circle class="text-gray-300" stroke-width="5" stroke="currentColor" fill="transparent" r="30" cx="40" cy="40"></circle>
+  <circle class="text-blue-600" stroke-width="5" :stroke-dasharray="circumference" :stroke-dashoffset="circumference - percent / 100 * circumference" stroke-linecap="round" stroke="currentColor" fill="transparent" r="30" cx="40" cy="40" stroke-dasharray="188.49555921538757" stroke-dashoffset="188.49555921538757"></circle>
+</svg>
