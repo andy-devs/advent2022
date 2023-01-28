@@ -1,7 +1,6 @@
 import useTimer from 'hooks/useTimer';
 import { ReactComponent as Gear } from 'assets/images/gear.svg';
 import { ReactComponent as Check } from 'assets/images/check.svg';
-import { useForm } from 'react-hook-form';
 import TimeInput from 'components/TimeInput/TimeInput';
 import useTimerInput from 'hooks/useTimerInput';
 
@@ -42,7 +41,27 @@ const Timer: React.FC<TimerProps> = () => {
 	};
 
 	return (
-		<div className='bg-black rounded-[50%] w-full max-w-[518px] min-h-full max-h-[518px] aspect-[1/1] flex items-center justify-center p-2 shadow-[5px_-16px_50px_rgba(255,255,255,0.15)]'>
+		<div className='relative bg-black rounded-[50%] w-full max-w-[518px] min-h-full max-h-[518px] aspect-[1/1] flex items-center justify-center p-2 shadow-[5px_-16px_50px_rgba(255,255,255,0.15)]'>
+			<svg
+				width='100%'
+				height='100%'
+				className='absolute top-0 bottom-0 left-0 right-0'>
+				<circle
+					className='text-blue-600 w-full h-full'
+					strokeWidth='5'
+					strokeDasharray='circumference'
+					strokeDashoffset='circumference - percent / 100 * circumference'
+					stroke-linecap='round'
+					stroke='currentColor'
+					fill='transparent'
+					r='50'
+					cx='50'
+					cy='50'
+					width='100%'
+					height='100%'
+					stroke-dasharray='188.49555921538757'
+					stroke-dashoffset='188.49555921538757'></circle>
+			</svg>
 			<div className='relative w-full h-full bg-background rounded-[50%] flex flex-col items-center justify-center shadow-[inset_0px_0px_114px_rgba(0,0,0,0.45)]'>
 				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-timer text-white text-[130px] xs:text-[196px] leading-none text-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
 					{isEditing ? (

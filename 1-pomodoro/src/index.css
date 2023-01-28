@@ -14,3 +14,9 @@
 		margin: 0;
 	}
 }
+
+@layer components {
+	.progress-bar {
+		background: url(./assets/images/background.svg);
+	}
+}
